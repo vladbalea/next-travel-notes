@@ -71,7 +71,7 @@ export default function NoteCard(props: Note) {
                     <DialogTrigger asChild>
                         <Button className="w-full">View</Button>
                     </DialogTrigger>
-                    <DialogContent className="w-[90%] overflow-y-scroll max-h-[95vh] rounded-lg sm:overflow-auto">
+                    <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] sm:max-h-[95vh] rounded-lg sm:overflow-auto">
                         <NoteInfo note={props} />
                     </DialogContent>
                 </Dialog>
@@ -80,7 +80,7 @@ export default function NoteCard(props: Note) {
                         <DropdownMenuTrigger asChild>
                             <Button variant="secondary">More</Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent>
+                        <DropdownMenuContent className="mr-10">
                             <DropdownMenuItem>Edit</DropdownMenuItem>
                             <AlertDialogTrigger asChild>
                                 <DropdownMenuItem className="text-red-500">Delete</DropdownMenuItem>
