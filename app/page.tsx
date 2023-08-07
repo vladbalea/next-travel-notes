@@ -1,14 +1,10 @@
-import NoteCard from "@/components/note-card"
+import NotesGrid from "@/components/notes-grid"
+import { Notes } from "@/lib/notes"
 
 export default function Home() {
     return (
-        <main>
-            <NoteCard
-                slug="test-note-page"
-                title="Primul travel note"
-                lastUpdated="January 13, 2023"
-                totalPrice={456}
-            />
-        </main>
+        <div className="md:w-max">
+            <NotesGrid notes={Notes} />
+        </div>
     )
 }
