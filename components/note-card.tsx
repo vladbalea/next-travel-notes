@@ -1,12 +1,9 @@
-"use client"
-
 import { parseISO, differenceInDays } from "date-fns"
 
 import { Note } from "@/types/types"
 import Date from "./date"
 import NoteInfo from "./note-info"
-
-import { Close as DialogClose } from "@radix-ui/react-dialog"
+import NoteInfoDialogClose from "./note-info-dialog-close"
 
 import {
     Card,
@@ -70,9 +67,7 @@ export default function NoteCard(props: Note) {
                     </DialogTrigger>
                     <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] sm:max-h-[95vh] rounded-lg sm:overflow-auto">
                         <NoteInfo note={props} />
-                        <DialogClose asChild>
-                            <Button className="mt-1 w-32 mr-0 ml-auto sm:hidden">Close</Button>
-                        </DialogClose>
+                        <NoteInfoDialogClose />
                     </DialogContent>
                 </Dialog>
                 <AlertDialog>
