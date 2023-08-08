@@ -47,12 +47,10 @@ import {
 export default function NoteCard(props: Note) {
     const nightsCount = differenceInDays(parseISO(props.accomodation.checkOutDate), parseISO(props.accomodation.checkInDate))
     return (
-        <Card className="w-full md:w-[350px]">
+        <Card className="w-full h-max md:w-[350px]">
             <CardHeader>
                 <CardTitle>{props.title}</CardTitle>
-                <CardDescription>
-                    Last updated on <Date dateISO={props.lastUpdated} />
-                </CardDescription>
+                <CardDescription>Last updated on <Date dateISO={props.lastUpdated} /></CardDescription>
             </CardHeader>
             <CardContent className="text-sm">
                 <div><MapPin size={15} className="inline" /> {props.accomodation.location}</div>
