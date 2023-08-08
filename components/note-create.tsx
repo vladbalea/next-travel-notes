@@ -178,6 +178,11 @@ function PopoverCountryCommandInput({
         onSelect: any
     }) {
     const [open, setOpen] = useState(false)
+
+    function handleSelect(currentValue: string) {
+        onSelect(currentValue)
+        setOpen(false)
+    }
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -196,7 +201,7 @@ function PopoverCountryCommandInput({
                     <CommandGroup>
                     {
                         Countries.map((country) => (
-                            <CommandItem key={country.code} onSelect={onSelect}>{country.name}</CommandItem>
+                            <CommandItem key={country.code} onSelect={handleSelect}>{country.name}</CommandItem>
                         ))
                     }
                     </CommandGroup>
