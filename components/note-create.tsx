@@ -233,7 +233,7 @@ function PopoverCalendarInput({
                 <Input
                     id={id}
                     value={date ? date.toUTCString() : "Pick a date"}
-                    className={cn("text-left", errorMsg != undefined && "border-red-500")}
+                    className={cn("text-left", errorMsg != undefined && "border-red-500", !date && "text-slate-500")}
                 />
             </PopoverTrigger>
             {errorMsg && <div className="text-red-500 text-sm mt-1">{errorMsg}</div>}
@@ -276,7 +276,7 @@ function PopoverCountryCommandInput({
                     id={id}
                     placeholder={placeholder}
                     value={flyLocation ? country?.name : "Select a country"}
-                    className={cn("text-left", errorMsg != undefined && "border-red-500")}
+                    className={cn("text-left", errorMsg != undefined && "border-red-500", !flyLocation && "text-slate-500")}
                 />
             </PopoverTrigger>
             {errorMsg && <div className="text-red-500 text-sm mt-1">{errorMsg}</div>}
