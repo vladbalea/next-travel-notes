@@ -30,18 +30,10 @@ export default function NoteInfo(props: { note: Note }) {
                 {note.title}
             </h1>
             <p className="leading-7 [&:not(:first-child)]:mt-6">
-                <div>
-                    <MapPin size={15} className="inline" /> {note.accomodation.location}
-                </div>
-                <div>
-                    <Clock3 size={15} className="inline" /> {nightsCount} nights
-                </div>
-                <div>
-                    <PlaneTakeoff size={15} className="inline" /> <Date dateISO={note.flight.departDate} />
-                </div>
-                <div>
-                    <Euro size={15} className="inline" /> {note.flight.price + (note.accomodation.price / note.accomodation.guests)} EUR {note.accomodation.guests > 1 && "/ person"}
-                </div>
+                <div><MapPin size={15} className="inline" /> {note.accomodation.location}</div>
+                <div><Clock3 size={15} className="inline" /> {nightsCount} nights</div>
+                <div><PlaneTakeoff size={15} className="inline" /> <Date dateISO={note.flight.departDate} /></div>
+                <div><Euro size={15} className="inline" /> {note.flight.price + (note.accomodation.price / note.accomodation.guests)} EUR {note.accomodation.guests > 1 && "/ person"}</div>
             </p>
             <h3 className="mt-6 mb-3 scroll-m-20 text-2xl font-semibold tracking-tight">Flight info</h3>
             <ul>

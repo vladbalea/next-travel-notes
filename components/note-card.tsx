@@ -1,8 +1,12 @@
+"use client"
+
 import { parseISO, differenceInDays } from "date-fns"
 
 import { Note } from "@/types/types"
 import Date from "./date"
 import NoteInfo from "./note-info"
+
+import { Close as DialogClose } from "@radix-ui/react-dialog"
 
 import {
     Card,
@@ -44,6 +48,7 @@ import {
 } from "lucide-react"
 
 export default function NoteCard(props: Note) {
+    const nightsCount = differenceInDays(parseISO(props.accomodation.checkOutDate), parseISO(props.accomodation.checkInDate))
     return (
         <Card className="w-full md:w-[350px]">
             <CardHeader>
@@ -53,18 +58,10 @@ export default function NoteCard(props: Note) {
                 </CardDescription>
             </CardHeader>
             <CardContent className="text-sm">
-                <div>
-                    <MapPin size={15} className="inline" /> {props.accomodation.location}
-                </div>
-                <div>
-                    <Clock3 size={15} className="inline" /> {differenceInDays(parseISO(props.accomodation.checkOutDate), parseISO(props.accomodation.checkInDate))} nights
-                </div>
-                <div>
-                    <PlaneTakeoff size={15} className="inline" /> <Date dateISO={props.flight.departDate} />
-                </div>
-                <div>
-                    <Euro size={15} className="inline" /> {props.flight.price + (props.accomodation.price / props.accomodation.guests)} EUR {props.accomodation.guests > 1 && "/ person"}
-                </div>
+                <div><MapPin size={15} className="inline" /> {props.accomodation.location}</div>
+                <div><Clock3 size={15} className="inline" /> {nightsCount} nights</div>
+                <div><PlaneTakeoff size={15} className="inline" /> <Date dateISO={props.flight.departDate} /></div>
+                <div><Euro size={15} className="inline" /> {props.flight.price + (props.accomodation.price / props.accomodation.guests)} EUR {props.accomodation.guests > 1 && "/ person"}</div>
             </CardContent>
             <CardFooter className="gap-2">
                 <Dialog>
@@ -73,6 +70,9 @@ export default function NoteCard(props: Note) {
                     </DialogTrigger>
                     <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] sm:max-h-[95vh] rounded-lg sm:overflow-auto">
                         <NoteInfo note={props} />
+                        <DialogClose asChild>
+                            <Button className="mt-1 w-32 mr-0 ml-auto sm:hidden">Close</Button>
+                        </DialogClose>
                     </DialogContent>
                 </Dialog>
                 <AlertDialog>
@@ -94,7 +94,9 @@ export default function NoteCard(props: Note) {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="bg-red-500">Continue</AlertDialogAction>
+                            <Button variant="destructive" asChild>
+                                <AlertDialogAction>Delete</AlertDialogAction>
+                            </Button>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialog>
