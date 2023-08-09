@@ -577,7 +577,7 @@ export default function NoteCreate({ className = undefined }: { className?: stri
                                 />
                                 {inputs.housingUrl.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.housingUrl.errorMsg}</div>}
                             </div>
-                            {isThereAnyFieldError() && <div className="text-red-500 text-sm mt-3 -mb-3">Complete all the fields above</div>}
+                            {isThereAnyFieldError() && <div className="text-red-500 text-sm mt-3 -mb-2">Complete all the fields above</div>}
                             <DialogFooter className="mt-5 gap-2 sm:gap-0">
                                 <DialogClose asChild>
                                     <Button type="button" variant="outline">Cancel</Button>
