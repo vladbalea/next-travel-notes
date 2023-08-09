@@ -592,8 +592,14 @@ function PopoverCalendarInput({
         onSelect: any
         errorMsg: string | undefined
     }) {
+    const [open, setOpen] = useState(false)
+
+    function handleSelect(currentValue: Date | undefined) {
+        onSelect(currentValue)
+        setOpen(false)
+    }
     return (
-        <Popover>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Input
                     id={id}
@@ -606,7 +612,7 @@ function PopoverCalendarInput({
                 <Calendar
                     mode="single"
                     selected={date}
-                    onSelect={onSelect}
+                    onSelect={handleSelect}
                     className="rounded-md border"
                 />
             </PopoverContent>
