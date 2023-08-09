@@ -169,7 +169,7 @@ export default function NoteCreate({ className = undefined }: { className?: stri
     function isThereAnyFieldError() {
         for (const property in inputs) {
             if (inputs.hasOwnProperty(property)) {
-                if (inputs[property].errorMsg !== undefined) {
+                if (inputs[property as keyof NoteForm].errorMsg !== undefined) {
                     return true
                 }
             }
