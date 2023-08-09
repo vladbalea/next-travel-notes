@@ -63,7 +63,7 @@ export default function NoteCard(props: Note) {
                     <DialogTrigger asChild>
                         <Button className="w-full">View</Button>
                     </DialogTrigger>
-                    <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] sm:max-h-[95vh] rounded-lg sm:overflow-auto">
+                    <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] rounded-lg sm:overflow-auto">
                         <NoteInfo note={props} />
                         <NoteInfoDialogClose />
                     </DialogContent>

@@ -36,95 +36,366 @@ import {
     CommandInput,
     CommandItem,
 } from "@/components/ui/command"
+import { Close as DialogClose } from "@radix-ui/react-dialog"
 
 import { FilePlus } from "lucide-react"
 
-export default function NoteCreate({ className = undefined }: { className?: string | undefined }) {
-    const [errorMsg, setErrorMsg] = useState<{
-        title: string | undefined
-        flyFrom: string | undefined
-        flyTo: string | undefined
-        departDate: string | undefined
-        arriveDate: string | undefined
-        flightPrice: string | undefined
-    }>({
-        title: undefined,
-        flyFrom: undefined,
-        flyTo: undefined,
-        departDate: undefined,
-        arriveDate: undefined,
-        flightPrice: undefined,
-    })
-    const [title, setTitle] = useState<string | undefined>(undefined)
-    const [flyFrom, setFlyFrom] = useState<string | undefined>(undefined)
-    const [flyTo, setFlyTo] = useState<string | undefined>(undefined)
-    const [departDate, setDepartDate] = useState<Date | undefined>(undefined)
-    const [arriveDate, setArriveDate] = useState<Date | undefined>(undefined)
-    const [flightPrice, setFlightPrice] = useState<number | undefined>(undefined)
+type NoteForm = {
+    title: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+    flyFrom: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+    flyTo: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+    departDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    arriveDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    returnDepartDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    returnArriveDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    flightPrice: {
+        value: number | undefined
+        errorMsg: string | undefined
+    }
+    flightUrl: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+    housingLocation: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+    housingPrice: {
+        value: number | undefined
+        errorMsg: string | undefined
+    }
+    housingGuests: {
+        value: number | undefined
+        errorMsg: string | undefined
+    }
+    housingCheckInDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    housingCheckOutDate: {
+        value: Date | undefined
+        errorMsg: string | undefined
+    }
+    housingUrl: {
+        value: string | undefined
+        errorMsg: string | undefined
+    }
+}
 
+export default function NoteCreate({ className = undefined }: { className?: string | undefined }) {
+    const [inputs, setInputs] = useState<NoteForm>({
+        title: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        flyFrom: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        flyTo: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        departDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        arriveDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        returnDepartDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        returnArriveDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        flightPrice: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        flightUrl: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingLocation: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingPrice: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingGuests: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingCheckInDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingCheckOutDate: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+        housingUrl: {
+            value: undefined,
+            errorMsg: undefined,
+        },
+    })
     function handleTitleChange(event: React.FormEvent<HTMLInputElement>) {
-        setTitle((event.target as HTMLInputElement).value)
-        setErrorMsg(prevState => ({ ...prevState, title: undefined }))
+        setInputs(values => ({
+            ...values,
+            title: {
+                value: (event.target as HTMLInputElement).value,
+                errorMsg: undefined
+            }
+        }))
     }
     function handleFlyFromSelect(currentValue: string) {
-        setFlyFrom(currentValue === flyFrom ? undefined : currentValue)
-        setErrorMsg(prevState => ({ ...prevState, flyFrom: undefined }))
+        setInputs(values => ({
+            ...values,
+            flyFrom: {
+                value: currentValue === inputs.flyFrom.value ? undefined : currentValue,
+                errorMsg: undefined
+            }
+        }))
     }
     function handleFlyToSelect(currentValue: string) {
-        setFlyTo(currentValue === flyTo ? undefined : currentValue)
-        setErrorMsg(prevState => ({ ...prevState, flyTo: undefined }))
+        setInputs(values => ({
+            ...values,
+            flyTo: {
+                value: currentValue === inputs.flyTo.value ? undefined : currentValue,
+                errorMsg: undefined
+            }
+        }))
     }
-    function handleDepartDateSelect(currentValue: React.SetStateAction<Date | undefined>) {
-        setDepartDate(currentValue)
-        setErrorMsg(prevState => ({ ...prevState, departDate: undefined }))
+    function handleDepartDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            departDate: {
+                value: currentValue,
+                errorMsg: undefined
+            }
+        }))
     }
-    function handleArriveDateSelect(currentValue: React.SetStateAction<Date | undefined>) {
-        setArriveDate(currentValue)
-        setErrorMsg(prevState => ({ ...prevState, arriveDate: undefined }))
+    function handleArriveDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            arriveDate: {
+                value: currentValue,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleReturnDepartDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            returnDepartDate: {
+                value: currentValue,
+                errorMsg: undefined
+            },
+            returnArriveDate: {
+                ...values.returnArriveDate,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleReturnArriveDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            returnArriveDate: {
+                value: currentValue,
+                errorMsg: undefined
+            },
+            returnDepartDate: {
+                ...values.returnDepartDate,
+                errorMsg: undefined
+            }
+        }))
     }
     function handleFlightPriceChange(event: React.FormEvent<HTMLInputElement>) {
-        setFlightPrice(parseInt((event.target as HTMLInputElement).value))
-        setErrorMsg(prevState => ({ ...prevState, flightPrice: undefined }))
+        setInputs(values => ({
+            ...values,
+            flightPrice: {
+                value: parseInt((event.target as HTMLInputElement).value),
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleFlightUrlChange(event: React.FormEvent<HTMLInputElement>) {
+        setInputs(values => ({
+            ...values,
+            flightUrl: {
+                value: (event.target as HTMLInputElement).value,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingLocationSelect(currentValue: string) {
+        setInputs(values => ({
+            ...values,
+            housingLocation: {
+                value: currentValue === inputs.housingLocation.value ? undefined : currentValue,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingPriceChange(event: React.FormEvent<HTMLInputElement>) {
+        setInputs(values => ({
+            ...values,
+            housingPrice: {
+                value: parseInt((event.target as HTMLInputElement).value),
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingGuestsChange(event: React.FormEvent<HTMLInputElement>) {
+        setInputs(values => ({
+            ...values,
+            housingGuests: {
+                value: parseInt((event.target as HTMLInputElement).value),
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingCheckInDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            housingCheckInDate: {
+                value: currentValue,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingCheckOutDateSelect(currentValue: Date | undefined) {
+        setInputs(values => ({
+            ...values,
+            housingCheckOutDate: {
+                value: currentValue,
+                errorMsg: undefined
+            }
+        }))
+    }
+    function handleHousingUrlChange(event: React.FormEvent<HTMLInputElement>) {
+        setInputs(values => ({
+            ...values,
+            housingUrl: {
+                value: (event.target as HTMLInputElement).value,
+                errorMsg: undefined
+            }
+        }))
     }
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-
         let incompleteFields = false
 
-        if (!title) {
-            setErrorMsg(prevState => ({ ...prevState, title: "" }))
+        if (!inputs.title.value) {
+            setInputs(values => ({...values, title: {...values.title, errorMsg: ""}}))
             incompleteFields = true
-        } else if (title.length > 48) {
-            setErrorMsg(prevState => ({ ...prevState, title: "The title must be below 48 characters" }))
-            incompleteFields = true
-        }
-        if (!flyFrom) {
-            setErrorMsg(prevState => ({ ...prevState, flyFrom: "" }))
+        } else if (inputs.title.value.length > 48) {
+            setInputs(values => ({...values, title: {...values.title, errorMsg: "The title must be below 48 characters"}}))
             incompleteFields = true
         }
-        if (!flyTo) {
-            setErrorMsg(prevState => ({ ...prevState, flyTo: "" }))
+        if (!inputs.flyFrom.value) {
+            setInputs(values => ({...values, flyFrom: {...values.flyFrom, errorMsg: ""}}))
             incompleteFields = true
         }
-        if (!departDate) {
-            setErrorMsg(prevState => ({ ...prevState, departDate: "" }))
+        if (!inputs.flyTo.value) {
+            setInputs(values => ({...values, flyTo: {...values.flyTo, errorMsg: ""}}))
             incompleteFields = true
         }
-        if (!arriveDate) {
-            setErrorMsg(prevState => ({ ...prevState, arriveDate: "" }))
+        if (!inputs.departDate.value) {
+            setInputs(values => ({...values, departDate: {...values.departDate, errorMsg: ""}}))
             incompleteFields = true
         }
-        if (flightPrice === undefined) {
-            setErrorMsg(prevState => ({ ...prevState, flightPrice: "" }))
+        if (!inputs.arriveDate.value) {
+            setInputs(values => ({...values, arriveDate: {...values.arriveDate, errorMsg: ""}}))
             incompleteFields = true
-        } else if (flightPrice < 0) {
-            setErrorMsg(prevState => ({ ...prevState, flightPrice: "The flight price must be greater than 0" }))
+        }
+        if (inputs.returnDepartDate.value && !inputs.returnArriveDate.value) {
+            setInputs(values => ({...values, returnArriveDate: {...values.returnArriveDate, errorMsg: ""}}))
+            incompleteFields = true
+        } else if (!inputs.returnDepartDate.value && inputs.returnArriveDate.value) {
+            setInputs(values => ({...values, returnDepartDate: {...values.returnDepartDate, errorMsg: ""}}))
+            incompleteFields = true
+        }
+        if (inputs.flightPrice.value === undefined) {
+            setInputs(values => ({...values, flightPrice: {...values.flightPrice, errorMsg: ""}}))
+            incompleteFields = true
+        } else if (inputs.flightPrice.value < 0) {
+            setInputs(values => ({...values, flightPrice: {...values.flightPrice, errorMsg: "The flight price must be greater than 0"}}))
+            incompleteFields = true
+        }
+        if (!inputs.housingLocation.value) {
+            setInputs(values => ({...values, housingLocation: {...values.housingLocation, errorMsg: ""}}))
+            incompleteFields = true
+        }
+        if (inputs.housingPrice.value === undefined) {
+            setInputs(values => ({...values, housingPrice: {...values.housingPrice, errorMsg: ""}}))
+            incompleteFields = true
+        } else if (inputs.housingPrice.value < 0) {
+            setInputs(values => ({...values, housingPrice: {...values.housingPrice, errorMsg: "The housing price must be greater than 0"}}))
+            incompleteFields = true
+        }
+        if (inputs.housingGuests.value === undefined) {
+            setInputs(values => ({...values, housingGuests: {...values.housingGuests, errorMsg: ""}}))
+            incompleteFields = true
+        } else if (inputs.housingGuests.value < 0) {
+            setInputs(values => ({...values, housingGuests: {...values.housingGuests, errorMsg: "The housing guests number must be greater than 0"}}))
+            incompleteFields = true
+        }
+        if (!inputs.housingCheckInDate.value) {
+            setInputs(values => ({...values, housingCheckInDate: {...values.housingCheckInDate, errorMsg: ""}}))
+            incompleteFields = true
+        }
+        if (!inputs.housingCheckOutDate.value) {
+            setInputs(values => ({...values, housingCheckOutDate: {...values.housingCheckOutDate, errorMsg: ""}}))
             incompleteFields = true
         }
         if (incompleteFields) {
             return
         }
-        alert(`Title: ${title}\nFly from: ${flyFrom}\nFly to: ${flyTo}\nDepart date: ${departDate?.toUTCString()}\nArrive date: ${arriveDate?.toUTCString()}\nFlight price: ${flightPrice} EUR`)
+        alert(`
+        Title: ${inputs.title.value}
+        Fly from: ${inputs.flyFrom.value}
+        Fly to: ${inputs.flyTo.value}
+        Depart date: ${inputs.departDate.value?.toUTCString()}
+        Arrive date: ${inputs.arriveDate.value?.toUTCString()}
+        Return depart date: ${inputs.returnDepartDate.value?.toUTCString()}
+        Return arrive date: ${inputs.returnArriveDate.value?.toUTCString()}
+        Flight price: ${inputs.flightPrice.value} EUR
+        Flight URL: ${inputs.flightUrl.value}
+        Housing location: ${inputs.housingLocation.value}
+        Housing price: ${inputs.housingPrice.value}
+        Housing guests number: ${inputs.housingGuests.value}
+        Housing check in date: ${inputs.housingCheckInDate.value?.toUTCString()}
+        Housing check out date: ${inputs.housingCheckOutDate.value?.toUTCString()}
+        Housing URL: ${inputs.housingUrl.value}
+        `)
     }
     return (
         <Card className={cn("w-full h-max md:w-[350px] bg-black text-white", className && className)}>
@@ -137,7 +408,7 @@ export default function NoteCreate({ className = undefined }: { className?: stri
                     <DialogTrigger asChild>
                         <Button variant="secondary" className="w-full">Create new note</Button>
                     </DialogTrigger>
-                    <DialogContent>
+                    <DialogContent className="w-[90%] overflow-y-scroll max-h-[85vh] rounded-lg">
                         <DialogHeader>
                             <DialogTitle>Create a new note</DialogTitle>
                             <DialogDescription>Create a new travel note to make your plan easier</DialogDescription>
@@ -148,20 +419,20 @@ export default function NoteCreate({ className = undefined }: { className?: stri
                                 <Input
                                     id="title"
                                     placeholder="My new trip"
-                                    value={title && title}
+                                    value={inputs.title.value && inputs.title.value}
                                     onChange={handleTitleChange}
-                                    className={errorMsg.title != undefined ? "border-red-500" : ""}
+                                    className={inputs.title.errorMsg != undefined ? "border-red-500" : ""}
                                 />
-                                {errorMsg.title && <div className="text-red-500 text-sm mt-1">{errorMsg.title}</div>}
+                                {inputs.title.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.title.errorMsg}</div>}
                             </div>
                             <div className="mt-1">
                                 <Label htmlFor="flyFrom" className="text-right w-32">Fly from</Label>
                                 <PopoverCountryCommandInput
                                     id="flyFrom"
                                     placeholder="France"
-                                    flyLocation={flyFrom}
+                                    flyLocation={inputs.flyFrom.value}
                                     onSelect={handleFlyFromSelect}
-                                    errorMsg={errorMsg.flyFrom}
+                                    errorMsg={inputs.flyFrom.errorMsg}
                                 />
                             </div>
                             <div className="mt-1">
@@ -169,27 +440,45 @@ export default function NoteCreate({ className = undefined }: { className?: stri
                                 <PopoverCountryCommandInput
                                     id="flyTo"
                                     placeholder="Egypt"
-                                    flyLocation={flyTo}
+                                    flyLocation={inputs.flyTo.value}
                                     onSelect={handleFlyToSelect}
-                                    errorMsg={errorMsg.flyTo}
+                                    errorMsg={inputs.flyTo.errorMsg}
                                 />
                             </div>
                             <div className="mt-1">
                                 <Label htmlFor="departDate" className="text-right w-32">Depart date</Label>
                                 <PopoverCalendarInput
                                     id="departDate"
-                                    date={departDate}
+                                    date={inputs.departDate.value}
                                     onSelect={handleDepartDateSelect}
-                                    errorMsg={errorMsg.departDate}
+                                    errorMsg={inputs.departDate.errorMsg}
                                 />
                             </div>
                             <div className="mt-1">
                                 <Label htmlFor="arriveDate" className="text-right w-32">Arrive date</Label>
                                 <PopoverCalendarInput
                                     id="arriveDate"
-                                    date={arriveDate}
+                                    date={inputs.arriveDate.value}
                                     onSelect={handleArriveDateSelect}
-                                    errorMsg={errorMsg.arriveDate}
+                                    errorMsg={inputs.arriveDate.errorMsg}
+                                />
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="returnDepartDate" className="text-right w-32">Return depart date</Label>
+                                <PopoverCalendarInput
+                                    id="returnDepartDate"
+                                    date={inputs.returnDepartDate.value}
+                                    onSelect={handleReturnDepartDateSelect}
+                                    errorMsg={inputs.returnDepartDate.errorMsg}
+                                />
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="returnArriveDate" className="text-right w-32">Return arrive date</Label>
+                                <PopoverCalendarInput
+                                    id="returnArriveDate"
+                                    date={inputs.returnArriveDate.value}
+                                    onSelect={handleReturnArriveDateSelect}
+                                    errorMsg={inputs.returnArriveDate.errorMsg}
                                 />
                             </div>
                             <div className="mt-1">
@@ -198,14 +487,90 @@ export default function NoteCreate({ className = undefined }: { className?: stri
                                     type="number"
                                     id="flightPrice"
                                     placeholder="90"
-                                    value={flightPrice}
+                                    value={inputs.flightPrice.value}
                                     onChange={handleFlightPriceChange}
-                                    className={errorMsg.flightPrice != undefined ? "border-red-500" : ""}
+                                    className={inputs.flightPrice.errorMsg != undefined ? "border-red-500" : ""}
                                 />
-                                {errorMsg.flightPrice && <div className="text-red-500 text-sm mt-1">{errorMsg.flightPrice}</div>}
+                                {inputs.flightPrice.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.flightPrice.errorMsg}</div>}
                             </div>
-                            <DialogFooter className="mt-5">
-                                <Button type="button" variant="outline">Cancel</Button>
+                            <div className="mt-1">
+                                <Label htmlFor="flightUrl" className="text-right w-32">Flight link</Label>
+                                <Input
+                                    id="flightUrl"
+                                    placeholder="URL to the flight site"
+                                    value={inputs.flightUrl.value}
+                                    onChange={handleFlightUrlChange}
+                                    className={inputs.flightUrl.errorMsg != undefined ? "border-red-500" : ""}
+                                />
+                                {inputs.flightUrl.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.flightUrl.errorMsg}</div>}
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingLocation" className="text-right w-32">Housing location</Label>
+                                <PopoverCountryCommandInput
+                                    id="housingLocation"
+                                    placeholder="Egypt"
+                                    flyLocation={inputs.housingLocation.value}
+                                    onSelect={handleHousingLocationSelect}
+                                    errorMsg={inputs.housingLocation.errorMsg}
+                                />
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingPrice" className="text-right w-32">Housing price</Label>
+                                <Input
+                                    type="number"
+                                    id="housingPrice"
+                                    placeholder="150"
+                                    value={inputs.housingPrice.value}
+                                    onChange={handleHousingPriceChange}
+                                    className={inputs.housingPrice.errorMsg != undefined ? "border-red-500" : ""}
+                                />
+                                {inputs.housingPrice.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.housingPrice.errorMsg}</div>}
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingGuests" className="text-right w-32">Guests number</Label>
+                                <Input
+                                    type="number"
+                                    id="housingGuests"
+                                    placeholder="2"
+                                    value={inputs.housingGuests.value}
+                                    onChange={handleHousingGuestsChange}
+                                    className={inputs.housingGuests.errorMsg != undefined ? "border-red-500" : ""}
+                                />
+                                {inputs.housingGuests.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.housingGuests.errorMsg}</div>}
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingCheckInDate" className="text-right w-32">Housing check in date</Label>
+                                <PopoverCalendarInput
+                                    id="housingCheckInDate"
+                                    date={inputs.housingCheckInDate.value}
+                                    onSelect={handleHousingCheckInDateSelect}
+                                    errorMsg={inputs.housingCheckInDate.errorMsg}
+                                />
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingCheckOutDate" className="text-right w-32">Housing check out date</Label>
+                                <PopoverCalendarInput
+                                    id="housingCheckOutDate"
+                                    date={inputs.housingCheckOutDate.value}
+                                    onSelect={handleHousingCheckOutDateSelect}
+                                    errorMsg={inputs.housingCheckOutDate.errorMsg}
+                                />
+                            </div>
+                            <div className="mt-1">
+                                <Label htmlFor="housingUrl" className="text-right w-32">Housing link</Label>
+                                <Input
+                                    id="housingUrl"
+                                    placeholder="URL to the housing site"
+                                    value={inputs.housingUrl.value}
+                                    onChange={handleHousingUrlChange}
+                                    className={inputs.housingUrl.errorMsg != undefined ? "border-red-500" : ""}
+                                />
+                                {inputs.housingUrl.errorMsg && <div className="text-red-500 text-sm mt-1">{inputs.housingUrl.errorMsg}</div>}
+                            </div>
+                            <DialogFooter className="mt-5 gap-2 sm:gap-0">
+                                <DialogClose asChild>
+                                    <Button type="button" variant="outline">Cancel</Button>
+                                </DialogClose>
                                 <Button type="submit">Create</Button>
                             </DialogFooter>
                         </form>
@@ -233,7 +598,7 @@ function PopoverCalendarInput({
                 <Input
                     id={id}
                     value={date ? date.toUTCString() : "Pick a date"}
-                    className={cn("text-left", errorMsg != undefined && "border-red-500", !date && "text-slate-500")}
+                    className={cn("text-left", errorMsg !== undefined && "border-red-500", !date && "text-slate-500")}
                 />
             </PopoverTrigger>
             {errorMsg && <div className="text-red-500 text-sm mt-1">{errorMsg}</div>}
@@ -270,7 +635,7 @@ function PopoverCountryCommandInput({
         setOpen(false)
     }
     return (
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={setOpen} modal={true}>
             <PopoverTrigger asChild>
                 <Input
                     id={id}
@@ -284,7 +649,7 @@ function PopoverCountryCommandInput({
                 <Command>
                     <CommandInput placeholder="Search country..." />
                     <CommandEmpty>No country found.</CommandEmpty>
-                    <CommandGroup>
+                    <CommandGroup className="overflow-y-scroll h-80">
                     {
                         Countries.map((country) => (
                             <CommandItem key={country.code} onSelect={handleSelect}>{country.name}</CommandItem>
